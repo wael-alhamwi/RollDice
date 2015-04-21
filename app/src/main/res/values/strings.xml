@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">RollDice</string>
     <string name="button_txt">Roll</string>
+    <string name="button_hold">Hold</string>
+    <string name="player2">Player 2</string>
     <string name="action_settings">Settings</string>
 </resources>

@@ -13,13 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class Player2 extends ActionBarActivity {
     private FrameLayout die1, die2;
     private Button roll, hold;
+    private int scoreIntent, score;
     private TextView p1, p2;
-    private int score , scoreIntent;
 
     public void addScore(int val1, int val2){
         int total = val1 + val2;
@@ -32,17 +33,17 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.player2);
 
         Intent intent = getIntent();
-        scoreIntent = intent.getIntExtra("scoreP2", 0);
-        score = intent.getIntExtra("scoreP1", 0);
+        scoreIntent = intent.getIntExtra("scoreP1", 0);
+        score = intent.getIntExtra("scoreP2", 0);
 
         p1 = (TextView) findViewById(R.id.p1);
         p2 = (TextView) findViewById(R.id.p2);
 
-        p1.setText("P1: "+ getScore());
-        p2.setText("P2: "+ scoreIntent);
+        p1.setText("P1: "+ scoreIntent);
+        p2.setText("P2: "+ getScore());
 
         roll = (Button) findViewById(R.id.button);
         roll.setOnClickListener(new View.OnClickListener() {
@@ -54,9 +55,9 @@ public class MainActivity extends ActionBarActivity {
                 }
                 else
                 {
-                    p1.setText("P1: "+ getScore());
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("Player 1 Won!");
+                    p2.setText("P2: "+ getScore());
+                    AlertDialog alertDialog = new AlertDialog.Builder(Player2.this).create();
+                    alertDialog.setTitle("Player 2 Won!");
                     alertDialog.setMessage("Game Over !");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
@@ -66,26 +67,22 @@ public class MainActivity extends ActionBarActivity {
                             });
                     alertDialog.show();
                 }
+
+
             }
         });
+
 
         hold = (Button)findViewById(R.id.hold);
         hold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*The commented out code here was the code we used
-                in class to send an integer to the next activty.
-                It was replaced by an alert dialog to be used to indicate
-                a winner (for demonstration purposes).
-                Use the alert dialog code in your program where appropriate*/
-                Intent intent = new Intent(MainActivity.this,Player2.class);
-                intent.putExtra("scoreP1", getScore());
+                Intent intent = new Intent(Player2.this,MainActivity.class);
+                intent.putExtra("scoreP2", getScore());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
-
             }
         });
-
 
         die1 = (FrameLayout) findViewById(R.id.die1);
         die2 = (FrameLayout) findViewById(R.id.die2);
@@ -98,13 +95,12 @@ public class MainActivity extends ActionBarActivity {
         int val2 = 1 + (int) (6 * Math.random());
         setDie(val1, die1);
         setDie(val2, die2);
-
         if (val1 == 1 || val2 == 1)
         {
             // No points are added and redirect to other player activity
-            Intent intent = new Intent(MainActivity.this,Player2.class);
-            intent.putExtra("scoreP1", getScore());
-            intent.putExtra("scoreP2", scoreIntent);
+            Intent intent = new Intent(Player2.this,MainActivity.class);
+            intent.putExtra("scoreP2", getScore());
+            intent.putExtra("scoreP1", scoreIntent);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
 
@@ -112,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
         else
         {
             addScore(val1,val2);
-            p1.setText("P1: "+ getScore());
+            p2.setText("P2: "+ getScore());
         }
 
     }
